@@ -5,15 +5,12 @@ from infinitesimals import (  # pyright: ignore[reportMissingTypeStubs]
     HyperReal as _Hreal,
     omega as _omega,
 )
-from types import MappingProxyType as _MapPxy
 from typing import (
     Literal as _Lit,
-    Mapping as _Map,
     NewType as _NewT,
+    Self as _Self,
     Sequence as _Seq,
     TypedDict as _TDict,
-    TypeVar as _TVar,
-    cast as _cast,
     final as _fin,
 )
 
@@ -52,47 +49,14 @@ MacroUniverse = Universe(ValueUniverse + _omega)
 
 
 @_dc(**_dc_args)
-class ASTModule:
-    pass
-
-
-_ExtendsASTModule = _TVar("_ExtendsASTModule", bound=ASTModule)
-
-
-@_dc(**_dc_args)
 @_fin
 class AST:
-    modules: _Map[type[ASTModule], ASTModule] = {}
-
-    def __post_init__(self):
-        object.__setattr__(self, "modules", _MapPxy(dict(self.modules)))
-
-    def module(self, type: type[_ExtendsASTModule]) -> _ExtendsASTModule | None:
-        return _cast(_ExtendsASTModule | None, self.modules.get(type, None))
-
-
-@_fin
-@_dc(**_dc_args)
-class Named(ASTModule):
-    name: str
-
-
-@_fin
-@_dc(**_dc_args)
-class Scope(ASTModule):
-    children: _Seq[AST]
+    semantics: str
+    children: _Seq[_Self] = []
+    name: str | None = None
 
     def __post_init__(self):
         object.__setattr__(self, "children", tuple(self.children))
-
-
-@_fin
-@_dc(**_dc_args)
-class Parameterized(ASTModule):
-    parameters: _Seq[AST]
-
-    def __post_init__(self):
-        object.__setattr__(self, "parameters", tuple(self.parameters))
 
 
 ASTLens = _Lens[AST, _Seq[tuple[int, str]]]
