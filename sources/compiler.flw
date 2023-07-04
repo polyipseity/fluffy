@@ -1,8 +1,0 @@
-(import "builtins")
-((lambda (memory) (("heap" "memory") ("memory" "memory") ("input" "number") ("output" "number"))
-	((lambda (memory) (("memory" "memory") ("source" "object"))
-		(write output program)
-		(close memory)
-	) (open "memory" "stack" memory) (read input))
-	(close output)(close input)(close memory)(close heap)
-) (open "memory/heap" 65536) (open "memory/stack" memory) (open "file" "compiler.flw") (open "file" "compiler.scm"))

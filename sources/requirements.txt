@@ -1,2 +1,0 @@
-anyio>=3.6.0
-infinitesimals>=0.1.0
